@@ -24,6 +24,7 @@ class Simulate {
         let sumOfResponseTime = 0;
         this.log(`segments length: ${this.segments.length}`);
         let index = 0;
+        let countOfFailed = 0;
         for (const segment of this.segments) {
             if (fetchedDuration >= 60) {
                 this.log(`sleeping 30s`);
@@ -31,6 +32,9 @@ class Simulate {
                 fetchedDuration = 0;
             }
             const fetchData = await request(`${this.baseUrl}/${segment.uri}`);
+            if (!fetchData.response) {
+                countOfFailed++;
+            }
             this.log(
                 `${index + 1}/${this.segments.length} | time: ${
                     fetchData.time
@@ -41,6 +45,7 @@ class Simulate {
             index++;
         }
         this.log(`avg: ${sumOfResponseTime / this.segments.length} ms`);
+        this.log(`failed: ${countOfFailed}`);
     }
 }
 
