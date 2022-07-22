@@ -13,12 +13,12 @@ const main = async () => {
     parser.push(manifest.response?.data);
     parser.end();
     const parsedManifest: Manifest = parser.manifest;
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 400; i++) {
         new workerThreads.Worker('./dist/service/simulate.js', {
             workerData: {
                 segments: JSON.stringify(parsedManifest.segments),
                 baseUrl: url.replace(/\/playlist.m3u8/, ''),
-                workerData: 'worker_' + i,
+                label: 'worker_' + i,
             },
         });
     }
