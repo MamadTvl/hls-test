@@ -2,8 +2,7 @@
 // @ts-ignore
 import { Parser } from 'm3u8-parser';
 import { request } from './service/request';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const workerThreads = require('worker_threads');
+import workerThreads from 'worker_threads';
 
 const main = async () => {
     const parser = new Parser();
@@ -14,7 +13,7 @@ const main = async () => {
     parser.push(manifest.response?.data);
     parser.end();
     const parsedManifest: Manifest = parser.manifest;
-    for (let i = 0; i < 4000; i++) {
+    for (let i = 0; i < 40; i++) {
         new workerThreads.Worker('./dist/service/simulate.js', {
             workerData: {
                 segments: JSON.stringify(parsedManifest.segments),

@@ -15,19 +15,23 @@ class Simulate {
         });
     }
 
+    log(...args: any) {
+        console.log(this.label, ...args);
+    }
+
     async run() {
         let fetchedDuration = 0;
         let sumOfResponseTime = 0;
-        console.log(`segments length: ${this.segments.length}`);
+        this.log(`segments length: ${this.segments.length}`);
         let index = 0;
         for (const segment of this.segments) {
             if (fetchedDuration >= 60) {
-                console.log(`sleeping 30s`);
-                Simulate.sleep(30 * 1000);
+                this.log(`sleeping 30s`);
+                await Simulate.sleep(30 * 1000);
                 fetchedDuration = 0;
             }
             const fetchData = await request(`${this.baseUrl}/${segment.uri}`);
-            console.log(
+            this.log(
                 `${index + 1}/${this.segments.length} | time: ${
                     fetchData.time
                 } ms`,
@@ -36,10 +40,7 @@ class Simulate {
             fetchedDuration += segment.duration;
             index++;
         }
-        console.log(
-            this.label,
-            `avg: ${sumOfResponseTime / this.segments.length} ms`,
-        );
+        this.log(`avg: ${sumOfResponseTime / this.segments.length} ms`);
     }
 }
 
