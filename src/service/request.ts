@@ -14,7 +14,6 @@ export const request = async (url: string): Promise<RequestData> => {
     const end = new Date();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    console.log(end - start);
     return {
         response,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

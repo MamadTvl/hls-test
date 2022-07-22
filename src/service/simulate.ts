@@ -21,18 +21,22 @@ class Simulate {
         for (const segment of this.segments) {
             if (fetchedDuration >= 60) {
                 Simulate.sleep(30 * 1000);
+                fetchedDuration = 0;
             }
             const fetchData = await request(`${this.baseUrl}/${segment.uri}`);
             sumOfResponseTime += fetchData.time;
             fetchedDuration += segment.duration;
         }
-        console.log(`avg: ${sumOfResponseTime / this.segments.length} ms`);
+        console.log(
+            this.label,
+            `avg: ${sumOfResponseTime / this.segments.length} ms`,
+        );
     }
 }
 
 const simulate = new Simulate(
     JSON.parse(workerData.segments),
     workerData.baseUrl,
-    '',
+    workerData.label,
 );
 simulate.run();
