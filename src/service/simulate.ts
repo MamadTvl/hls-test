@@ -18,14 +18,23 @@ class Simulate {
     async run() {
         let fetchedDuration = 0;
         let sumOfResponseTime = 0;
+        console.log(`segments length: ${this.segments.length}`);
+        let index = 0;
         for (const segment of this.segments) {
             if (fetchedDuration >= 60) {
+                console.log(`sleeping 30s`);
                 Simulate.sleep(30 * 1000);
                 fetchedDuration = 0;
             }
             const fetchData = await request(`${this.baseUrl}/${segment.uri}`);
+            console.log(
+                `${index + 1}/${this.segments.length} | time: ${
+                    fetchData.time
+                } ms`,
+            );
             sumOfResponseTime += fetchData.time;
             fetchedDuration += segment.duration;
+            index++;
         }
         console.log(
             this.label,
